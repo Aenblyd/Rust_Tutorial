@@ -19,13 +19,13 @@ fn main() -> glib::ExitCode {
         let menu_bar = MenuBar::new();
 
         // --- Menu "Fichier" ---
-        let file_menu_item = MenuItem::with_label("Fichier");
+        let file_menu_item = MenuItem::with_label("File");
         let file_menu = gtk::Menu::new();
         file_menu_item.set_submenu(Some(&file_menu));
         menu_bar.append(&file_menu_item);
 
         // --- Menu "Aide" avec item "Version" ---
-        let help_menu_item = MenuItem::with_label("Aide");
+        let help_menu_item = MenuItem::with_label("Help");
         let help_menu = gtk::Menu::new();
         help_menu_item.set_submenu(Some(&help_menu));
         menu_bar.append(&help_menu_item);
@@ -37,8 +37,8 @@ fn main() -> glib::ExitCode {
         let about_dialog = AboutDialog::builder()
             .program_name(env!("CARGO_PKG_NAME"))
             .version(env!("CARGO_PKG_VERSION"))
-            .authors(vec!["Vincent Roscouet"])
-            .comments("Une application GTK3 en Rust")
+            .authors(vec!["Aen Blyd"])
+            .comments("Rust with GTK simple app")
             .transient_for(&window)
             .build();
 
@@ -50,9 +50,9 @@ fn main() -> glib::ExitCode {
         help_menu.append(&version_menu_item);
 
         // --- Bouton principal ---
-        let button = Button::with_label("Cliquez-moi !");
+        let button = Button::with_label("Click here!");
         button.connect_clicked(|_| {
-            println!("Bouton cliqué !");
+            println!("The Button has been clicked !");
         });
 
         // --- Conteneur vertical ---
