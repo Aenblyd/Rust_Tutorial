@@ -1,0 +1,8 @@
+[package]
+name = "tutorial"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gtk = { version = "0.17", features = ["v3_24"] }
+glib = "0.17" 
