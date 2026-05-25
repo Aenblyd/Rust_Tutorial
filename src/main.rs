@@ -1,4 +1,5 @@
 use gtk::prelude::*;
+// Force Rust to use GTK objects instead of Rust embedded ones
 use gtk::{Application, ApplicationWindow, Button, MenuBar, MenuItem, AboutDialog, Box as GtkBox};
 
 fn main() -> glib::ExitCode {
@@ -15,16 +16,16 @@ fn main() -> glib::ExitCode {
             .default_height(300)
             .build();
 
-        // --- Barre de menu ---
+        // --- Bar Menu to host File and About
         let menu_bar = MenuBar::new();
 
-        // --- Menu "Fichier" ---
+        // --- File Menu _ good to have one at first
         let file_menu_item = MenuItem::with_label("File");
         let file_menu = gtk::Menu::new();
         file_menu_item.set_submenu(Some(&file_menu));
         menu_bar.append(&file_menu_item);
 
-        // --- Menu "Aide" avec item "Version" ---
+        // --- About Menu with Version Item
         let help_menu_item = MenuItem::with_label("Help");
         let help_menu = gtk::Menu::new();
         help_menu_item.set_submenu(Some(&help_menu));
@@ -33,7 +34,7 @@ fn main() -> glib::ExitCode {
         // --- Item "Version" ---
         let version_menu_item = MenuItem::with_label("Version");
 
-        // --- Déclare la boîte de dialogue en dehors du connect_activate ---
+        // --- About is based on a dialog box, have to declare it before activation
         let about_dialog = AboutDialog::builder()
             .program_name(env!("CARGO_PKG_NAME"))
             .version(env!("CARGO_PKG_VERSION"))
@@ -43,24 +44,24 @@ fn main() -> glib::ExitCode {
             .build();
 
         version_menu_item.connect_activate(move |_| {
-            about_dialog.show(); // ✅ Affiche la boîte (non bloquant)
-            about_dialog.run();  // ✅ Bloque jusqu'à la fermeture
-            about_dialog.hide(); // ✅ Masque la boîte (optionnel)
+            about_dialog.show(); // ✅ Show it, not in locked mode
+            about_dialog.run();  // ✅ Lock it until closure
+            about_dialog.hide(); // ✅ To avoid destroy (obsolete), just hide it
         });
         help_menu.append(&version_menu_item);
 
-        // --- Bouton principal ---
+        // --- 1 Bouton to test print in console
         let button = Button::with_label("Click here!");
         button.connect_clicked(|_| {
             println!("The Button has been clicked !");
         });
 
-        // --- Conteneur vertical ---
-        let vbox = GtkBox::new(gtk::Orientation::Vertical, 0); // ✅ `gtk::Box` avec espacement
+        // --- To host the button and the menu : a vertical gtk bar
+        let vbox = GtkBox::new(gtk::Orientation::Vertical, 0); // ✅ `gtk::Box` with spacing
         vbox.pack_start(&menu_bar, false, false, 0);
         vbox.pack_start(&button, true, true, 0);
 
-        // --- Ajoute le conteneur à la fenêtre ---
+        // --- add the vertical box to the window
         window.set_child(Some(&vbox));
         window.show_all();
     });
